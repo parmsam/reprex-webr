@@ -2,8 +2,8 @@ Package: reprex.webr
 Type: Package
 Title: Generate WebR Reproducible Examples
 Version: 0.1.0
-Author: person("Author", "Name", email = "author@example.com", role = c("aut", "cre"))
-Maintainer: Author Name <author@example.com>
+Author: person("Author", "Sam Parmar", email = "parmartsam@gmail.com", role = c("aut", "cre"))
+Maintainer: Sam Parmar <parmartsam@gmail.com>
 Description: A package that provides functionality to generate WebR reproducible examples,
     inspired by the reprex package. Creates shareable WebR URLs for R code snippets.
 License: MIT + file LICENSE
