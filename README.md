@@ -30,12 +30,20 @@ reprex_webr(input = c(
   "mean(x)",
   "plot(x)"
 ))
+
+# Pass an expression directly
+reprex_webr({
+  x <- 1:10
+  mean(x)
+  plot(x)
+})
 ```
 
 ## Features
 
 - Generate shareable WebR URLs from R code
 - Read code from clipboard (requires `clipr` package)
+- Accepts code as an expression, character vector, file path, or clipboard
 - Similar API to the `reprex` package
 - Boilerplate implementation ready for extension
 
