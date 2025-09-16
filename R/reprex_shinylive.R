@@ -18,11 +18,15 @@
 #'   server <- function(input, output, session) {}
 #'   shinyApp(ui, server)
 #' })
+#' reprex_shinylive(
+#'   input = c("library(shiny)", "ui <- fluidPage('Hello, world!')", "server <- function(input, output, session) {}", "shinyApp(ui, server)"), 
+#'   base_url = "https://shinylive.io/r/app/"
+#' )
 #' }
 reprex_shinylive <- function(
   x = NULL,
   input = NULL,
-  base_url = "https://shinylive.io/r/app/",
+  base_url = "https://shinylive.io/r/editor/",
   html_preview = TRUE,
   copy_to_clipboard = TRUE
 ) {
