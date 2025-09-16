@@ -37,11 +37,28 @@ reprex_webr({
   mean(x)
   plot(x)
 })
+
+# Generate shinylive.io URL from Shiny app code (NEW)
+reprex_shinylive({
+  library(shiny)
+  ui <- fluidPage("Hello, world!")
+  server <- function(input, output, session) {}
+  shinyApp(ui, server)
+})
+
+# Or from a character vector
+reprex_shinylive(input = c(
+  "library(shiny)",
+  "ui <- fluidPage('Hello, world!')",
+  "server <- function(input, output, session) {}",
+  "shinyApp(ui, server)"
+))
 ```
 
 ## Features
 
 - Generate shareable WebR URLs from R code
+- Generate shareable shinylive.io URLs from Shiny app code (NEW)
 - Read code from clipboard (requires `clipr` package)
 - Accepts code as an expression, character vector, file path, or clipboard
 - Similar API to the `reprex` package
