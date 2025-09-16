@@ -45,5 +45,3 @@ reprex_webr({
 - Read code from clipboard (requires `clipr` package)
 - Accepts code as an expression, character vector, file path, or clipboard
 - Similar API to the `reprex` package
-- Boilerplate implementation ready for extension
-
