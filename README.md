@@ -1,10 +1,10 @@
-# reprexwebr
+# reprex.webr
 
 An R package that provides a `reprex_webr()` function to generate WebR reproducible examples, inspired by the [reprex](https://reprex.tidyverse.org/) package.
 
 ## Installation
 
-You can install the development version of reprexwebr from GitHub:
+You can install the development version of reprex.webr from GitHub:
 
 ```r
 # install.packages("devtools")
@@ -14,7 +14,7 @@ devtools::install_github("parmsam/reprex_webr")
 ## Usage
 
 ```r
-library(reprexwebr)
+library(reprex.webr)
 
 # Generate WebR URL from code
 reprex_webr("1 + 1")

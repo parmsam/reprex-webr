@@ -95,7 +95,7 @@ reprex_webr <- function(x = NULL,
   
   # Add advertisement if requested
   if (advertise) {
-    ad_text <- paste(comment, "Created with reprexwebr package")
+    ad_text <- paste(comment, "Created with reprex.webr package")
     # In full implementation, this would be properly integrated
   }
   

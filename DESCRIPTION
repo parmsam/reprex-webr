@@ -1,4 +1,4 @@
-Package: reprexwebr
+Package: reprex.webr
 Type: Package
 Title: Generate WebR Reproducible Examples
 Version: 0.1.0

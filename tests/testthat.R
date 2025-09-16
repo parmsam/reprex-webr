@@ -1,4 +1,4 @@
 library(testthat)
-library(reprexwebr)
+library(reprex.webr)
 
-test_check("reprexwebr")
+test_check("reprex.webr")
