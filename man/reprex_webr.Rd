@@ -2,57 +2,37 @@
 % Please edit documentation in R/reprex_webr.R
 \name{reprex_webr}
 \alias{reprex_webr}
-\title{Generate WebR Reproducible Example}
+\title{Create a webR Share URL from R code}
 \usage{
 reprex_webr(
   x = NULL,
-  venue = "webr",
-  advertise = TRUE,
-  si = FALSE,
-  style = TRUE,
-  comment = "#>",
-  tidyverse_quiet = TRUE,
-  std_out_err = FALSE
+  input = NULL,
+  base_url = "https://webr.r-wasm.org/latest/",
+  html_preview = TRUE
 )
 }
 \arguments{
-\item{x}{Input code. Can be a character vector, expression, or if NULL,
-code will be read from the clipboard.}
+\item{x}{An expression. If not provided, will try \code{input}, then clipboard.}
 
-\item{venue}{Character string specifying the output venue. Currently
-supports "webr" (default).}
+\item{input}{Character. If length 1 and a file exists at that path, code is read from file. 
+Otherwise, assumed to be code as character vector.}
 
-\item{advertise}{Logical. Whether to include a footer advertising the
-package (default TRUE).}
+\item{base_url}{The base webR URL for sharing (default: "https://webr.r-wasm.org/latest/").}
 
-\item{si}{Logical. Whether to include session info in the output
-(default FALSE).}
-
-\item{style}{Logical. Whether to style the code (default TRUE).}
-
-\item{comment}{Character string to use as comment prefix (default "#>").}
-
-\item{tidyverse_quiet}{Logical. Whether to suppress tidyverse startup
-messages (default TRUE).}
-
-\item{std_out_err}{Logical. Whether to capture stdout and stderr
-(default FALSE).}
+\item{html_preview}{Logical. Whether to show rendered output in a viewer (RStudio or browser). Always FALSE in a noninteractive session.}
 }
 \value{
-A character string containing the WebR URL.
+A single string containing the shareable URL.
 }
 \description{
-Create a shareable WebR URL from R code, inspired by the reprex package.
-This function takes R code and generates a webr.sh URL that can be shared
-to demonstrate reproducible examples.
+Prepares R code for sharing and execution in a webR browser session by 
+encoding it into a URL. Accepts code as an expression, character vector, 
+file path, or from the clipboard, similar to reprex().
 }
 \examples{
-\dontrun{
-# Generate WebR URL from code
-reprex_webr("1 + 1")
-
-# Generate WebR URL from clipboard (requires clipr package)
+clipr::write_clip('print("hello reprex!")')
 reprex_webr()
-}
+reprex_webr(input = c("x <- 1:10", "plot(x, x^2)"))
+reprex_webr({x <- 1:10; plot(x, x^2)})
 
 }

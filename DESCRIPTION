@@ -9,10 +9,12 @@ Description: A package that provides functionality to generate WebR reproducible
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports:
     clipr,
-    utils
+    utils,
+    RcppMsgPack,
+    base64enc

@@ -15,15 +15,17 @@ devtools::install_github("parmsam/reprex_webr")
 
 ```r
 library(reprex.webr)
-
-# Generate WebR URL from code
-reprex_webr("1 + 1")
+library(clipr)
 
 # Generate WebR URL from clipboard
+write_clip("1 + 5")
 reprex_webr()
 
+# Generate WebR URL from code
+reprex_webr(input = "1 + 1")
+
 # Multiple lines of code
-reprex_webr(c(
+reprex_webr(input = c(
   "x <- 1:10",
   "mean(x)",
   "plot(x)"
@@ -37,6 +39,3 @@ reprex_webr(c(
 - Similar API to the `reprex` package
 - Boilerplate implementation ready for extension
 
-## Note
-
-This is currently a boilerplate implementation. The WebR URL generation logic needs to be implemented to properly encode code for webr.sh.

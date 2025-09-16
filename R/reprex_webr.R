@@ -1,107 +1,84 @@
-#' Generate WebR Reproducible Example
+#' Create a webR Share URL from R code
 #'
-#' Create a shareable WebR URL from R code, inspired by the reprex package.
-#' This function takes R code and generates a webr.sh URL that can be shared
-#' to demonstrate reproducible examples.
+#' @description
+#' Prepares R code for sharing and execution in a webR browser session by 
+#' encoding it into a URL. Accepts code as an expression, character vector, 
+#' file path, or from the clipboard, similar to reprex().
 #'
-#' @param x Input code. Can be a character vector, expression, or if NULL,
-#'   code will be read from the clipboard.
-#' @param venue Character string specifying the output venue. Currently
-#'   supports "webr" (default).
-#' @param advertise Logical. Whether to include a footer advertising the
-#'   package (default TRUE).
-#' @param si Logical. Whether to include session info in the output
-#'   (default FALSE).
-#' @param style Logical. Whether to style the code (default TRUE).
-#' @param comment Character string to use as comment prefix (default "#>").
-#' @param tidyverse_quiet Logical. Whether to suppress tidyverse startup
-#'   messages (default TRUE).
-#' @param std_out_err Logical. Whether to capture stdout and stderr
-#'   (default FALSE).
-#'
-#' @return A character string containing the WebR URL.
-#'
-#' @examples
-#' \dontrun{
-#' # Generate WebR URL from code
-#' reprex_webr("1 + 1")
-#'
-#' # Generate WebR URL from clipboard (requires clipr package)
-#' reprex_webr()
-#' }
-#'
+#' @param x An expression. If not provided, will try \code{input}, then clipboard.
+#' @param input Character. If length 1 and a file exists at that path, code is read from file. 
+#'   Otherwise, assumed to be code as character vector.
+#' @param base_url The base webR URL for sharing (default: "https://webr.r-wasm.org/latest/").
+#' @param html_preview Logical. Whether to show rendered output in a viewer (RStudio or browser). Always FALSE in a noninteractive session.
+#' @return A single string containing the shareable URL.
 #' @export
-reprex_webr <- function(x = NULL,
-                        venue = "webr",
-                        advertise = TRUE,
-                        si = FALSE,
-                        style = TRUE,
-                        comment = "#>",
-                        tidyverse_quiet = TRUE,
-                        std_out_err = FALSE) {
+#' @examples
+#' clipr::write_clip('print("hello reprex!")')
+#' reprex_webr()
+#' reprex_webr(input = c("x <- 1:10", "plot(x, x^2)"))
+#' reprex_webr({x <- 1:10; plot(x, x^2)})
+#'
+reprex_webr <- function(
+    x = NULL,
+    input = NULL,
+    base_url = "https://webr.r-wasm.org/latest/",
+    html_preview = TRUE
+) {
+  # In non-interactive sessions, always FALSE
+  if (!interactive()) html_preview <- FALSE
   
-  # Validate venue
-  if (!venue %in% c("webr")) {
-    stop("Currently only 'webr' venue is supported", call. = FALSE)
-  }
-  
-  # Handle input code
-  if (is.null(x)) {
-    # Try to read from clipboard
-    if (requireNamespace("clipr", quietly = TRUE)) {
-      if (clipr::clipr_available()) {
-        x <- clipr::read_clip()
-        if (length(x) == 0) {
-          stop("No code found in clipboard", call. = FALSE)
-        }
-      } else {
-        stop("Clipboard is not available", call. = FALSE)
+  # Helper: get code as character
+  get_code <- function(x, input) {
+    # 1. If x is present, deparse
+    if (!is.null(x)) {
+      x_expr <- substitute(x)
+      if (is.expression(x_expr) || is.call(x_expr)) {
+        return(deparse(x_expr))
       }
-    } else {
-      stop("clipr package is required to read from clipboard. Please install it or provide code directly.", call. = FALSE)
     }
+    # 2. If input is a file path
+    if (!is.null(input)) {
+      if (length(input) == 1 && file.exists(input)) {
+        return(readLines(input))
+      }
+      # Otherwise, treat as code vector
+      return(as.character(input))
+    }
+    # 3. Fallback: clipboard (only if interactive)
+    if (interactive()) {
+      if (clipr::clipr_available()) {
+        return(clipr::read_clip())
+      }
+    }
+    stop("No code provided via x, input, or clipboard.")
   }
   
-  # Convert input to character if needed
-  if (!is.character(x)) {
-    x <- deparse(substitute(x))
+  if (identical(trimws(input), "")) {
+    stop("No code to share: input is empty.")
   }
+  code_lines <- get_code(x, input)
+  # Collapse code into single string
+  code_string <- paste(code_lines, collapse = "\n")
   
-  # Combine multiple lines if needed
-  code_string <- paste(x, collapse = "\n")
+  # Build the item list as per webR ShareItem structure
+  item <- list(
+    name = "main.R",
+    path = "/home/web_user/main.R",
+    text = code_string
+  )
   
-  # Basic code validation
-  if (nchar(trimws(code_string)) == 0) {
-    stop("No code provided", call. = FALSE)
+  # Encode as webR expects: MessagePack -> zlib -> base64 -> URL encode
+  msgpack_data <- RcppMsgPack::msgpack_pack(list(item))
+  zlib_data <- memCompress(msgpack_data, "gzip")
+  b64_data <- base64enc::base64encode(zlib_data)
+  url_code <- utils::URLencode(b64_data, reserved = TRUE)
+  share_url <- paste0(base_url, "#code=", url_code)
+
+  # Preview in viewer or browser if requested
+  if (isTRUE(html_preview)) {
+    utils::browseURL(share_url)
+    invisible(share_url)
+  } else {
+    return(share_url)
   }
-  
-  # Generate WebR URL (boilerplate implementation)
-  # This is where the actual webr.sh URL generation logic would go
-  base_url <- "https://webr.sh/v/1/"
-  
-  # For now, just create a simple encoded version
-  # In a full implementation, this would properly encode the code
-  # and handle all the reprex-style formatting
-  encoded_code <- URLencode(code_string, reserved = TRUE)
-  
-  webr_url <- paste0(base_url, "?code=", encoded_code)
-  
-  # Add session info if requested
-  if (si) {
-    session_info <- capture.output(sessionInfo())
-    si_comment <- paste(comment, session_info, collapse = "\n")
-    # In full implementation, this would be properly integrated
-  }
-  
-  # Add advertisement if requested
-  if (advertise) {
-    ad_text <- paste(comment, "Created with reprex.webr package")
-    # In full implementation, this would be properly integrated
-  }
-  
-  # Print message about URL creation
-  message("WebR URL created: ", webr_url)
-  
-  # Return the URL invisibly so it can be captured but also prints
-  invisible(webr_url)
 }
