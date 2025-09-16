@@ -1,6 +1,6 @@
 Package: reprex.webr
 Type: Package
-Title: Generate WebR Reproducible Examples
+Title: Generate WebR Reproducible Examples for R Code Snippets
 Version: 0.1.0
 Author: person("Author", "Sam Parmar", email = "parmartsam@gmail.com", role = c("aut", "cre"))
 Maintainer: Sam Parmar <parmartsam@gmail.com>
