@@ -22,7 +22,8 @@ reprex_webr <- function(
   x = NULL,
   input = NULL,
   base_url = "https://webr.r-wasm.org/latest/",
-  html_preview = TRUE
+  html_preview = TRUE,
+  copy_to_clipboard = TRUE
 ) {
   if (!interactive()) html_preview <- FALSE
 
@@ -64,6 +65,11 @@ reprex_webr <- function(
   b64_data <- base64enc::base64encode(zlib_data)
   url_code <- utils::URLencode(b64_data, reserved = TRUE)
   share_url <- paste0(base_url, "#code=", url_code)
+
+  if (isTRUE(copy_to_clipboard) && interactive() && clipr::clipr_available()) {
+    clipr::write_clip(share_url)
+    message("URL copied to clipboard.")
+  }
 
   if (isTRUE(html_preview)) {
     utils::browseURL(share_url)
