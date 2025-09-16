@@ -29,11 +29,23 @@ reprex_webr <- function(
   
   # Helper: get code as character
   get_code <- function(x, input) {
-    # 1. If x is present, deparse
+    # 1. If x is present
     if (!is.null(x)) {
       x_expr <- substitute(x)
-      if (is.expression(x_expr) || is.call(x_expr)) {
-        return(deparse(x_expr))
+      # If x is a call or expression, deparse to lines
+      if (is.call(x_expr) || is.expression(x_expr)) {
+        code <- deparse(x_expr)
+        # Remove wrapping braces if present
+        if (length(code) > 1 && grepl("^\\{", code[1]) && grepl("\\}$", code[length(code)])) {
+          code <- code[-c(1, length(code))]
+        }
+        code <- trimws(code)
+        code <- code[code != ""]
+        return(code)
+      }
+      # If x is a character vector, use as code
+      if (is.character(x)) {
+        return(as.character(x))
       }
     }
     # 2. If input is a file path

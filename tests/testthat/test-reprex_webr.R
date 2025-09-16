@@ -1,3 +1,4 @@
+source("../../R/reprex_webr.R")
 test_that("reprex_webr returns a URL", {
   result <- reprex_webr("1 + 1", html_preview = FALSE)
   expect_type(result, "character")
