@@ -1,6 +1,6 @@
 # reprex.webr
 
-An R package that provides a `reprex_webr()` function to generate WebR reproducible examples, inspired by the [reprex](https://reprex.tidyverse.org/) package.
+An R package that provides `reprex_webr()`/`reprex_shinylive()` functions to generate WebR or SHinylive reproducible examples, inspired by the [reprex](https://reprex.tidyverse.org/) package.
 
 ## Installation
 
