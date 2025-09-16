@@ -8,7 +8,8 @@ reprex_webr(
   x = NULL,
   input = NULL,
   base_url = "https://webr.r-wasm.org/latest/",
-  html_preview = TRUE
+  html_preview = TRUE,
+  copy_to_clipboard = TRUE
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ Otherwise, assumed to be code as character vector.}
 \item{base_url}{The base webR URL for sharing (default: "https://webr.r-wasm.org/latest/").}
 
 \item{html_preview}{Logical. Whether to show rendered output in a viewer (RStudio or browser). Always FALSE in a noninteractive session.}
+
+\item{copy_to_clipboard}{Logical. Whether to copy the URL to the clipboard (default: TRUE, only if interactive and clipr available).}
 }
 \value{
 A single string containing the shareable URL.
@@ -30,9 +33,11 @@ encoding it into a URL. Accepts code as an expression, character vector,
 file path, or from the clipboard, similar to reprex().
 }
 \examples{
+\dontrun{
 clipr::write_clip('print("hello reprex!")')
 reprex_webr()
 reprex_webr(input = c("x <- 1:10", "plot(x, x^2)"))
 reprex_webr({x <- 1:10; plot(x, x^2)})
+}
 
 }

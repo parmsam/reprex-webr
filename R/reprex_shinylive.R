@@ -11,12 +11,14 @@
 #' @return A single string containing the shareable URL.
 #' @export
 #' @examples
+#' \dontrun{
 #' reprex_shinylive({
 #'   library(shiny)
 #'   ui <- fluidPage("Hello, world!")
 #'   server <- function(input, output, session) {}
 #'   shinyApp(ui, server)
 #' })
+#' }
 reprex_shinylive <- function(
   x = NULL,
   input = NULL,

@@ -17,4 +17,6 @@ Imports:
     clipr,
     utils,
     RcppMsgPack,
-    base64enc
+    base64enc,
+    jsonlite,
+    lzstring

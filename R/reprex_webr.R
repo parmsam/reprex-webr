@@ -10,13 +10,16 @@
 #'   Otherwise, assumed to be code as character vector.
 #' @param base_url The base webR URL for sharing (default: "https://webr.r-wasm.org/latest/").
 #' @param html_preview Logical. Whether to show rendered output in a viewer (RStudio or browser). Always FALSE in a noninteractive session.
+#' @param copy_to_clipboard Logical. Whether to copy the URL to the clipboard (default: TRUE, only if interactive and clipr available).
 #' @return A single string containing the shareable URL.
 #' @export
 #' @examples
+#' \dontrun{
 #' clipr::write_clip('print("hello reprex!")')
 #' reprex_webr()
 #' reprex_webr(input = c("x <- 1:10", "plot(x, x^2)"))
 #' reprex_webr({x <- 1:10; plot(x, x^2)})
+#' }
 #'
 reprex_webr <- function(
   x = NULL,
