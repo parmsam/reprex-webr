@@ -7,7 +7,7 @@
 reprex_shinylive(
   x = NULL,
   input = NULL,
-  base_url = "https://shinylive.io/r/app/",
+  base_url = "https://shinylive.io/r/editor/",
   html_preview = TRUE,
   copy_to_clipboard = TRUE
 )
@@ -27,7 +27,7 @@ reprex_shinylive(
 A single string containing the shareable URL.
 }
 \description{
-Prepares Shiny app code for sharing and execution in a shinylive.io browser session by encoding it into a URL. Accepts code as an expression, character vector, file path, or from the clipboard, similar to reprex_shinylive().
+Prepares Shiny app code for sharing and execution in a shinylive.io browser session by encoding it into a URL. Accepts code as an expression, character vector, file path, or from the clipboard, similar to reprex().
 }
 \examples{
 \dontrun{
@@ -37,5 +37,9 @@ reprex_shinylive({
   server <- function(input, output, session) {}
   shinyApp(ui, server)
 })
+reprex_shinylive(
+  input = c("library(shiny)", "ui <- fluidPage('Hello, world!')", "server <- function(input, output, session) {}", "shinyApp(ui, server)"), 
+  base_url = "https://shinylive.io/r/app/"
+)
 }
 }

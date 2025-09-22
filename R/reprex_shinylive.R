@@ -1,7 +1,7 @@
 #' Create a shinylive.io Share URL from Shiny app code
 #'
 #' @description
-#' Prepares Shiny app code for sharing and execution in a shinylive.io browser session by encoding it into a URL. Accepts code as an expression, character vector, file path, or from the clipboard, similar to reprex_shinylive().
+#' Prepares Shiny app code for sharing and execution in a shinylive.io browser session by encoding it into a URL. Accepts code as an expression, character vector, file path, or from the clipboard, similar to reprex().
 #'
 #' @param x An expression. If not provided, will try `input`, then clipboard.
 #' @param input Character. If length 1 and a file exists at that path, code is read from file. Otherwise, assumed to be code as character vector.
